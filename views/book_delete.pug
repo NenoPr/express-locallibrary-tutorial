@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h1 #{book.title}
+  p #[strong Author:]
+    a(href=book.author.url) #{book.author.name}
+
+  if book_instances.length
+
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 All Copies
+
+      dl
+      each val in book_instances
+        hr
+        if val.status=='Available'
+          p.text-success #{val.status}
+        else if val.status=='Maintenance'
+          p.text-danger #{val.status}
+        else
+          p.text-warning #{val.status}
+        p #[strong Imprint:] #{val.imprint}
+        p #[strong Id:] #{val.id}
+  
+  else
+    p Do you really want to delete this book?
+
+  p #[strong Deleting this book will delete all of its copies. Are you sure?]
+  form(method='POST' action='')
+    div.form-group
+    input#bookid.form-control(type='hidden',name='bookid', required='true', value=book._id )
+
+    button.btn.btn-primary(type='submit') Delete
